@@ -126,8 +126,10 @@
         motion-gpios = <&xiao_d 10 GPIO_ACTIVE_LOW>;
         cpi = <800>;
         evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
+        zephyr,axis-x = <INPUT_REL_X>;
+        zephyr,axis-y = <INPUT_REL_Y>;
+        //x-input-code = <INPUT_REL_X>;
+        //y-input-code = <INPUT_REL_Y>;
 
         force-awake;
     };
