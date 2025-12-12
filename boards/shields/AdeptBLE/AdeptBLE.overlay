@@ -126,8 +126,8 @@
         motion-gpios = <&xiao_d 10 GPIO_ACTIVE_LOW>;
         res-cpi = <400>;
         //evt-type = <INPUT_EV_REL>;
-        zephyr,axis-x = <INPUT_REL_X>;
-        zephyr,axis-y = <INPUT_REL_Y>;
+        zephyr,axis-x = <INPUT_REL_Y>;
+        zephyr,axis-y = <INPUT_REL_X>;
         //x-input-code = <INPUT_REL_X>;
         //y-input-code = <INPUT_REL_Y>;
         smart-mode;
