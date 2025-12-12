@@ -102,7 +102,7 @@
 };
 
 &uart0 {
-    status = "disabled";
+    status = "enabled";
 };
 
 &xiao_serial {
