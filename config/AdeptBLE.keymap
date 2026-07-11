@@ -12,11 +12,11 @@
 #define SNIPE 5
 
 / {
-  // --- INPUT LISTENERS (Handles Scroll Mode & Snipe Mode Speed) ---
-  // This looks at the PMW3610 data and adjusts behavior based on the active layer
-  &trackball_listener {
-    status = "okay";
-    
+  // --- XIAO BLE INPUT LISTENER (Handles Scroll & Snipe on v0.3) ---
+  xiao_ble_listener {
+    compatible = "zmk,input-listener";
+    device = <&xiao_ble>; 
+
     // 1. When on Layer 1 (SCRLM) or Layer 2 (SCRLH), make the ball act as a scroll wheel
     scroll_mode {
       layers = <SCRLM SCRLH>;
@@ -49,7 +49,6 @@
   };
 
   behaviors {
-    // Custom hold-tap for Button 1 (Back / Hold for Bluetooth)
     lt_bt: layer_tap_bluetooth {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
@@ -58,7 +57,6 @@
       bindings = <&mo>, <&mkp>;
     };
 
-    // Custom hold-tap for Button 2 (Forward / Hold for Device Utilities)
     lt_dev: layer_tap_device {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
@@ -117,7 +115,6 @@
     };
 
     // LAYER 5: SNIPE LAYER (Precision 50% Speed Mode)
-    // Tap Button 6 (Bottom right) to snap back to full speed.
     snipe_layer {
       display-name = "Snipe";
       bindings = <
