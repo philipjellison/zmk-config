@@ -49,7 +49,7 @@
       display-name = "Scroll";
       bindings = <
         &trans             &trans                &trans       &to SCRLH
-        &trans                                                &to SNIPE
+        &trans                                                &tog SNIPE
       >;
     };
 
@@ -85,7 +85,7 @@
       display-name = "Snipe";
       bindings = <
         &trans             &trans                &trans       &trans
-        &trans                                                &to DEFAULT
+        &trans                                                &trans
       >;
     };
   };
