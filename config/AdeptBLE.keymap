@@ -4,8 +4,6 @@
 #include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/outputs.h>
 
-// #include <dt-bindings/zmk/mouse.h>
-
 #define DEFAULT 0
 #define SCRLM 1
 #define SCRLH 2
@@ -14,81 +12,111 @@
 #define SNIPE 5
 
 / {
-  combos {
-    compatible = "zmk,combos";
-    combo_esc {
-      timeout-ms = <50>;
-      key-positions = <2 3>;
-      bindings = <&mkp RCLK>;
+  // --- INPUT LISTENERS (The Magic for your PMW3610 Precision Mode) ---
+  // This intercepts the sensor signal and cuts x/y movement in half ONLY when Layer 5 is toggled on.
+  /*
+  &trackball_listener {
+    status = "okay";
+    snipe_mode {
+      layers = <SNIPE>;
+      input-processors = <&zip_xy_scaler 1 2>; // Scaler fraction: 1/2 speed (50%)
     };
   };
+  */
+
+  combos {
+    compatible = "zmk,combos";
+    
+    // Toggle Scroll Lock: Hold Button 3 and Tap Button 4
+    combo_scroll_lock {
+      timeout-ms = <50>;
+      key-positions = <2 3>; // Button 3 + Button 4
+      bindings = <&to SCRLH>;
+    };
+
+    // Toggle Snipe Mode (50% Speed): Hold Button 3 and Tap Button 6
+    combo_snipe_toggle {
+      timeout-ms = <50>;
+      key-positions = <2 5>; // Button 3 (Top row 3rd) + Button 6 (Bottom row Right)
+      bindings = <&to SNIPE>;
+    };
+  };
+
   behaviors {
-    ltm: layer-tap-momentary {
+    // Custom hold-tap for Button 1 (Back / Hold for Bluetooth)
+    lt_bt: layer_tap_bluetooth {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
       flavor = "tap-preferred";
       tapping-term-ms = <200>;
       bindings = <&mo>, <&mkp>;
     };
-    lth: layer-tap-hold-while-undecided {
+
+    // Custom hold-tap for Button 2 (Forward / Hold for Device Utilities)
+    lt_dev: layer_tap_device {
       compatible = "zmk,behavior-hold-tap";
       #binding-cells = <2>;
-      flavor = "hold-preferred";
-      hold-while-undecided;
-      tapping-term-ms = <150>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <200>;
       bindings = <&mo>, <&mkp>;
     };
-    mto: momentary-or-toggle {
-      compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <2>;
-      flavor = "hold-preferred";
-      hold-while-undecided;
-      tapping-term-ms = <200>;
-      bindings = <&mo>, <&to>;
-    };
   };
+
   keymap {
     compatible = "zmk,keymap";
+
+    // LAYER 0: BASE LAYER
     default_layer {
       display-name = "Default";
       bindings = <
-        &ltm BLTH MB4 &ltm DEVICE MB5 &to SCRLM &mkp RCLK
-        &mkp LCLK                               &mkp MCLK
+        &lt_bt BLTH MB4    &lt_dev DEVICE MB5    &mo SCRLM    &mkp RCLK
+        &mkp LCLK                                             &mkp MCLK
       >;
     };
+
+    // LAYER 1: MOMENTARY SCROLL LAYER (While holding Button 3)
     scroll_tap_layer {
-      display-name = "Scroll-Momentary";
+      display-name = "Scroll";
       bindings = <
-        &trans &trans &to SCRLH &trans
-        &to SCRLH               &trans
+        &trans             &trans                &trans       &trans
+        &trans                                                &trans
       >;
     };
+
+    // LAYER 2: SCROLL LOCK LAYER (Stays active until you tap a top row button)
     scroll_hold_layer {
-      display-name = "Scroll-Keep";
+      display-name = "Scroll-Lock";
       bindings = <
-        &trans &trans &trans &to DEFAULT
-        &trans               &to DEFAULT
+        &to DEFAULT        &to DEFAULT           &to DEFAULT  &to DEFAULT
+        &trans                                                &trans
       >;
     };
+
+    // LAYER 3: DEVICE UTILITY LAYER (Hold Button 2)
     device_layer {
       display-name = "Device";
       bindings = <
-        &bootloader &trans &trans &trans
-        &trans                    &bt BT_CLR
+        &bootloader        &trans                &trans       &trans
+        &trans                                                &bt BT_CLR
       >;
     };
+
+    // LAYER 4: BLUETOOTH SELECTION LAYER (Hold Button 1)
     bluetooth_layer {
       display-name = "Bluetooth";
       bindings = <
-        &trans &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2
-        &bt BT_SEL 3                     &bt BT_SEL 4
+        &trans             &bt BT_SEL 0          &bt BT_SEL 1 &bt BT_SEL 2
+        &bt BT_SEL 3                                          &bt BT_SEL 4
       >;
     };
+
+    // LAYER 5: SNIPE LAYER (Precision Mode)
+    // Tap Button 6 (Bottom right) to snap out of Snipe and back to Default speed.
     snipe_layer {
       display-name = "Snipe";
       bindings = <
-        &trans &trans &trans &lth SCRLM RCLK
-        &trans               &to DEFAULT
+        &trans             &trans                &trans       &trans
+        &trans                                                &to DEFAULT
       >;
     };
   };
