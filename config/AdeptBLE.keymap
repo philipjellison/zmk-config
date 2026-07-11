@@ -3,8 +3,6 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/outputs.h>
-// CRITICAL FIX: This pulls in ZMK's built-in mouse tracking and scroll mappers
-#include <input/processors.dtsi>
 
 #define DEFAULT 0
 #define SCRLM 1
@@ -14,17 +12,23 @@
 #define SNIPE 5
 
 / {
-  // --- INPUT LISTENERS (The Magic for your PMW3610 Precision Mode) ---
-  // This intercepts the sensor signal and cuts x/y movement in half ONLY when Layer 5 is toggled on.
-  /*
+  // --- INPUT LISTENERS (Handles Scroll Mode & Snipe Mode Speed) ---
+  // This looks at the PMW3610 data and adjusts behavior based on the active layer
   &trackball_listener {
     status = "okay";
+    
+    // 1. When on Layer 1 (SCRLM) or Layer 2 (SCRLH), make the ball act as a scroll wheel
+    scroll_mode {
+      layers = <SCRLM SCRLH>;
+      input-processors = <&zip_xy_to_scroll_mapper>;
+    };
+
+    // 2. When on Layer 5 (SNIPE), cut mouse movement speed exactly in half
     snipe_mode {
       layers = <SNIPE>;
-      input-processors = <&zip_xy_scaler 1 2>; // Scaler fraction: 1/2 speed (50%)
+      input-processors = <&zip_xy_scaler 1 2>; 
     };
   };
-  */
 
   combos {
     compatible = "zmk,combos";
@@ -39,7 +43,7 @@
     // Toggle Snipe Mode (50% Speed): Hold Button 3 and Tap Button 6
     combo_snipe_toggle {
       timeout-ms = <50>;
-      key-positions = <2 5>; // Button 3 (Top row 3rd) + Button 6 (Bottom row Right)
+      key-positions = <2 5>; // Button 3 + Button 6 (Bottom Right)
       bindings = <&to SNIPE>;
     };
   };
@@ -76,7 +80,7 @@
       >;
     };
 
-    // LAYER 1: MOMENTARY SCROLL LAYER (While holding Button 3)
+    // LAYER 1: MOMENTARY SCROLL LAYER (While holding Button 3 down)
     scroll_tap_layer {
       display-name = "Scroll";
       bindings = <
@@ -85,7 +89,7 @@
       >;
     };
 
-    // LAYER 2: SCROLL LOCK LAYER (Stays active until you tap a top row button)
+    // LAYER 2: SCROLL LOCK LAYER (Stays active until you tap a top-row button)
     scroll_hold_layer {
       display-name = "Scroll-Lock";
       bindings = <
@@ -112,8 +116,8 @@
       >;
     };
 
-    // LAYER 5: SNIPE LAYER (Precision Mode)
-    // Tap Button 6 (Bottom right) to snap out of Snipe and back to Default speed.
+    // LAYER 5: SNIPE LAYER (Precision 50% Speed Mode)
+    // Tap Button 6 (Bottom right) to snap back to full speed.
     snipe_layer {
       display-name = "Snipe";
       bindings = <
