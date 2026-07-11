@@ -12,22 +12,6 @@
 #define SNIPE 5
 
 // --- CHIP INTEGRATED INPUT LISTENER (Fixes Undefined Label Error) ---
-&trackball_listener {
-  status = "okay";
-
-  // 1. When on Layer 1 (SCRLM) or Layer 2 (SCRLH), make the ball act as a scroll wheel
-  scroll_mode {
-    layers = <SCRLM SCRLH>;
-    input-processors = <&zip_xy_to_scroll_mapper>;
-  };
-
-  // 2. When on Layer 5 (SNIPE), cut mouse movement speed exactly in half
-  snipe_mode {
-    layers = <SNIPE>;
-    input-processors = <&zip_xy_scaler 1 2>;
-  };
-};
-
 / {
   combos {
     compatible = "zmk,combos";
