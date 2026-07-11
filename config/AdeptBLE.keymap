@@ -11,7 +11,7 @@
 #define BLTH 4
 #define SNIPE 5
 
-/ {
+{
   // --- CHIP INTEGRATED INPUT LISTENER (Fixes Undefined Label Error) ---
   &trackball_listener {
     status = "okay";
