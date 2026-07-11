@@ -12,11 +12,10 @@
 #define SNIPE 5
 
 / {
-  // --- XIAO BLE INPUT LISTENER (Handles Scroll & Snipe on v0.3) ---
-  xiao_ble_listener {
-    compatible = "zmk,input-listener";
-    device = <&xiao_ble>; 
-
+  // --- CHIP INTEGRATED INPUT LISTENER (Fixes Undefined Label Error) ---
+  &trackball_listener {
+    status = "okay";
+    
     // 1. When on Layer 1 (SCRLM) or Layer 2 (SCRLH), make the ball act as a scroll wheel
     scroll_mode {
       layers = <SCRLM SCRLH>;
