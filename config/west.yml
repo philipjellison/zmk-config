@@ -1,4 +1,5 @@
-manifest:
+
+ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
@@ -13,7 +14,7 @@ manifest:
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: badjeff
-      revision: main
+      revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93 # main as of 2026-04-16
     # - name: zmk-pmw3610-driver
     #   remote: cyboard
     #   revision: startup_optimization
