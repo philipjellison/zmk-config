@@ -13,7 +13,7 @@ manifest:
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: philipjellison
-      revision: bf4097e4c7d55242c515b882d5b75c58fb1cf590 # own fork: clear motion regs on wake
+      revision: 0c7c01e1a315f87f745cf5dced1df65553b90057 # own fork: settle window + debug logging
     # - name: zmk-pmw3610-driver
     #   remote: cyboard
     #   revision: startup_optimization
