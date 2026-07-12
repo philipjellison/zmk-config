@@ -1,10 +1,9 @@
-
- manifest:
+manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: badjeff
-      url-base: https://github.com/badjeff
+    - name: philipjellison
+      url-base: https://github.com/philipjellison
     # - name: cyboard
     #   url-base: https://github.com/Cyboard-DigitalTailor
   projects:
@@ -13,8 +12,8 @@
       revision: v0.3
       import: app/west.yml
     - name: zmk-pmw3610-driver
-      remote: badjeff
-      revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93 # main as of 2026-04-16
+      remote: philipjellison
+      revision: bf4097e4c7d55242c515b882d5b75c58fb1cf590 # own fork: clear motion regs on wake
     # - name: zmk-pmw3610-driver
     #   remote: cyboard
     #   revision: startup_optimization
