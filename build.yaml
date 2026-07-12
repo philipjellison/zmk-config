@@ -20,8 +20,5 @@
 include:
   - board: seeeduino_xiao_ble
     shield: AdeptBLE
-    snippet: zmk-usb-logging
-    # Temporarily swapped from studio-rpc-usb-uart + -DCONFIG_ZMK_STUDIO=y
-    # for wake-jump debug logging. Revert to the line below once done:
-    # snippet: studio-rpc-usb-uart
-    # cmake-args: -DCONFIG_ZMK_STUDIO=y
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
